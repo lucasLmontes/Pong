@@ -11,12 +11,16 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-public class Game extends Canvas implements Runnable {
+public class Game extends Canvas implements Runnable, KeyListener {
 	public static int WIDTH = 160, HEIGHT = 120, SCALE = 3;
 	public BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
+	public Player player;
+	
 	public Game() {
+		this.addKeyListener(this);
 		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
+		player = new Player(60, HEIGHT-5);
 	}
 	
 	public static void main(String[] args) {
@@ -32,7 +36,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public void tick() {
-		
+		player.tick();
 	}
 	
 	public void render() {
@@ -45,6 +49,8 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = image.getGraphics();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		player.render(g);
 		
 		g.dispose();
 		g = bs.getDrawGraphics();
@@ -62,6 +68,28 @@ public class Game extends Canvas implements Runnable {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			player.right = true;
+		} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+			player.left = true;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			player.right = false;
+		} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+			player.left = false;
 		}
 	}
 }
