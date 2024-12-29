@@ -9,7 +9,7 @@ public class Ball {
 	public double x, y;
 	public int width, height;
 	public double dx, dy;
-	public double spd = 1.5;
+	public double spd = 1.7;
 	
 	public Ball(int x, int y) {
 		this.x = x;
@@ -17,7 +17,7 @@ public class Ball {
 		this.width = 4;
 		this.height = 4;
 		
-		int angle = new Random().nextInt(160);
+		int angle = new Random().nextInt(120 - 45) + 46;
 		dx = Math.cos(Math.toRadians(angle));
 		dy = Math.sin(Math.toRadians(angle));
 	}
@@ -44,9 +44,19 @@ public class Ball {
 		Rectangle boundEnemy = new Rectangle((int)Game.enemy.x, (int)Game.enemy.y, Game.enemy.width, Game.enemy.height);
 		
 		if(bound.intersects(boundPlayer)) {
-			dy *= -1;
+			int angle = new Random().nextInt(120 - 45) + 46;
+			dx = Math.cos(Math.toRadians(angle));
+			dy = Math.sin(Math.toRadians(angle));
+			if(dy > 0) {
+				dy *= -1;
+			}
 		} else if(bound.intersects(boundEnemy)) {
-			dy *= -1;
+			int angle = new Random().nextInt(120 - 45) + 46;
+			dx = Math.cos(Math.toRadians(angle));
+			dy = Math.sin(Math.toRadians(angle));
+			if(dy < 0) {
+				dy *= -1;
+			}
 		}
 		
 		x += dx*spd;
