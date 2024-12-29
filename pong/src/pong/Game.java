@@ -15,14 +15,16 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public static int WIDTH = 160, HEIGHT = 120, SCALE = 3;
 	public BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
-	public Player player;
-	public Enemy enemy;
+	public static Player player;
+	public static Enemy enemy;
+	public static Ball ball;
 	
 	public Game() {
 		this.addKeyListener(this);
 		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		player = new Player(60, HEIGHT-5);
 		enemy = new Enemy(60, 0);
+		ball = new Ball(60, HEIGHT/2 - 2);
 	}
 	
 	public static void main(String[] args) {
@@ -40,6 +42,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 	public void tick() {
 		player.tick();
 		enemy.tick();
+		ball.tick();
 	}
 	
 	public void render() {
@@ -55,6 +58,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		
 		player.render(g);
 		enemy.render(g);
+		ball.render(g);
 		
 		g.dispose();
 		g = bs.getDrawGraphics();
@@ -81,18 +85,18 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = true;
-		} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+		} else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			player.left = true;
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = false;
-		} else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+		} else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
 			player.left = false;
 		}
 	}
